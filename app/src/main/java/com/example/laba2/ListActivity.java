@@ -2,10 +2,13 @@ package com.example.laba2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,10 +33,24 @@ public class ListActivity extends AppCompatActivity {
         Button buttonLang = findViewById(R.id.buttonLang);
         Button buttonAdd = findViewById(R.id.buttonAdd);
         Button buttonRm = findViewById(R.id.buttonRm);
+        EditText editText = findViewById(R.id.editText);
 
-        myStringArray = new ArrayList<String>();
-        ArrayAdapter<String> TextAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, myStringArray);
+        myStringArray = new ArrayList<>();
+        ArrayList<String> selectedElements = new ArrayList<>();
+        ArrayAdapter TextAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, myStringArray);
         textList.setAdapter(TextAdapter);
+
+        textList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+            {
+                String element = (String) TextAdapter.getItem(position);
+                if (textList.isItemChecked(position))
+                    selectedElements.add(element);
+                else
+                    selectedElements.remove(element);
+            }
+        });
 
         buttonLang.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,22 +63,28 @@ public class ListActivity extends AppCompatActivity {
                     buttonAdd.setText("Add");
                     buttonRm.setText("Remove");
                 }
-                view.requestLayout();
+                TextAdapter.notifyDataSetChanged();
             }
         });
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myStringArray.add("element " + myStringArray.size());
-                view.requestLayout();
+                String elementName = editText.getText().toString();
+                TextAdapter.add(elementName);
+                TextAdapter.notifyDataSetChanged();
             }
         });
         buttonRm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (myStringArray.size()!=0) {
-                    myStringArray.remove(myStringArray.size()-1);
-                    view.requestLayout();
+                    textList.clearChoices();
+                    for(int i=0; i < selectedElements.size();i++)
+                    {
+                        TextAdapter.remove(selectedElements.get(i));
+                    }
+                    selectedElements.clear();
+                    TextAdapter.notifyDataSetChanged();
                 }
             }
         });
