@@ -2,6 +2,8 @@ package com.example.laba2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -13,9 +15,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ListActivity extends AppCompatActivity {
     ArrayList<String> myStringArray;
+    String role;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +30,12 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.list_activity);
 
         Bundle arguments = getIntent().getExtras();
-        String role = arguments.get("role").toString();
+        role = arguments.get("role").toString();
+        myStringArray = new ArrayList<>();
+
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        Set<String> stringSet = sharedPref.getStringSet(role, Collections.emptySet());
+        myStringArray.addAll(stringSet);
 
         TextView textView2 = findViewById(R.id.textView2);
         textView2.setText(role);
@@ -35,7 +47,7 @@ public class ListActivity extends AppCompatActivity {
         Button buttonRm = findViewById(R.id.buttonRm);
         EditText editText = findViewById(R.id.editText);
 
-        myStringArray = new ArrayList<>();
+
         ArrayList<String> selectedElements = new ArrayList<>();
         ArrayAdapter TextAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, myStringArray);
         textList.setAdapter(TextAdapter);
@@ -89,6 +101,14 @@ public class ListActivity extends AppCompatActivity {
                 }
             }
         });
-
+    }
+    @Override
+    protected void onDestroy() {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(role);
+        editor.putStringSet(role, myStringArray.stream().collect(Collectors.toSet()));
+        editor.apply();
+        super.onDestroy();
     }
 }
