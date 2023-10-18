@@ -71,6 +71,7 @@ public class ListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String elementName = editText.getText().toString();
                 TextAdapter.add(elementName);
+                editText.setText("");
                 TextAdapter.notifyDataSetChanged();
             }
         });
