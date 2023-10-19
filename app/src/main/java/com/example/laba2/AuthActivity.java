@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class AuthActivity extends AppCompatActivity {
     String role;
+    DatabaseHandler db = new DatabaseHandler(this);
 
     @Override
     protected void onStart() {
@@ -19,6 +20,8 @@ public class AuthActivity extends AppCompatActivity {
         role = "Guest";
 
         Button submitButton = findViewById(R.id.submitButton);
+        Button regButton = findViewById(R.id.regButton);
+        EditText loginText = findViewById(R.id.editTextLogin);
         EditText passwdText = findViewById(R.id.editTextPassword);
         Toast myToast = new Toast(this);
         Intent openIntent = new Intent(this, ListActivity.class);
@@ -26,25 +29,22 @@ public class AuthActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (passwdText.getText().toString()){
-                    case "123456":{
-                        openIntent.putExtra("role", "Employee");
-                        startActivity(openIntent);
-                        return;
+                Integer userId = db.authUser(loginText.getText().toString(), passwdText.getText().toString());
+                if (userId != null) {
+                    openIntent.putExtra("userId", userId);
+                    startActivity(openIntent);
+                } else
+                    Toast.makeText(AuthActivity.this, "Wrong login or password, try again.", Toast.LENGTH_LONG).show();
+            }
+        });
+        regButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User user = new User();
+                user.setLogin(loginText.getText().toString());
+                user.setPass(passwdText.getText().toString());
 
-                    }
-                    case "qwerty":{
-                        openIntent.putExtra("role", "Admin");
-                        startActivity(openIntent);
-                        return;
-                    }
-                    default:{
-                        myToast.makeText(AuthActivity.this,
-                                "Invalid Password", Toast.LENGTH_LONG).show();
-                    }
-                }
             }
         });
     }
-
 }
