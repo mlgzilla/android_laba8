@@ -10,6 +10,5 @@ public final class DBContract {
         public static final String COLUMN_NAME_KEY_ID = "id";
         public static final String COLUMN_NAME_LOGIN = "login";
         public static final String COLUMN_NAME_PASS = "pass";
-        public static final String COLUMN_NAME_LIST = "list";
     }
 }

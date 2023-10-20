@@ -24,12 +24,12 @@
         android:layout_marginStart="15dp"/>
 
     <Button
-        android:id="@+id/buttonLang"
+        android:id="@+id/buttonSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="130pt"
+        android:layout_marginStart="124pt"
         android:layout_marginTop="5pt"
-        android:text="Рус/Eng"/>
+        android:text="Настройки"/>
 
     <Button
         android:id="@+id/buttonAdd"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textList"
         android:layout_marginTop="5pt"
-        android:layout_alignStart="@+id/buttonLang"
+        android:layout_alignStart="@+id/buttonSettings"
         android:text="REMOVE" />
 
     <TextView

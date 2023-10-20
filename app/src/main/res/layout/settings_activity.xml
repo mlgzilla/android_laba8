@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
-    android:id="@+id/auth_activity"
+    android:id="@+id/settings_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,19 +9,10 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Введите логин и пароль"
+        android:text="Смена пароля"
         android:layout_marginTop="60pt"
-        android:layout_marginStart="60pt"
+        android:layout_marginStart="70pt"
         android:layout_marginHorizontal="60pt"/>
-
-    <EditText
-        android:id="@+id/editTextLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="12"
-        android:layout_marginTop="10pt"
-        android:layout_marginStart="35pt"
-        android:layout_below="@+id/textView"/>
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -29,7 +20,7 @@
         android:layout_height="wrap_content"
         android:ems="12"
         android:inputType="textPassword"
-        android:layout_below="@+id/editTextLogin"
+        android:layout_below="@+id/textView"
         android:layout_marginTop="10pt"
         android:layout_marginStart="35pt"/>
     <Button
@@ -38,16 +29,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextPassword"
         android:layout_marginTop="10pt"
-        android:layout_marginStart="70pt"
-        android:text="Войти"/>
+        android:layout_marginStart="65pt"
+        android:text="Отправить"/>
     <Button
-        android:id="@+id/regButton"
+        android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/submitButton"
-        android:layout_marginTop="10pt"
+        android:layout_marginTop="45pt"
         android:layout_marginStart="50pt"
-        android:text="Зарегистрироваться"/>
-
-
+        android:text="Удалить пользователя"/>
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/deleteButton"
+        android:layout_marginTop="80pt"
+        android:layout_marginStart="70pt"
+        android:text="Назад"/>
 </RelativeLayout>

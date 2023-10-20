@@ -22,7 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_USERS_TABLE = "CREATE TABLE " + DBContract.UserEntry.TABLE_NAME + "("
                 + DBContract.UserEntry.COLUMN_NAME_KEY_ID + " INTEGER PRIMARY KEY," +
-                DBContract.UserEntry.COLUMN_NAME_LOGIN + " TEXT," + DBContract.UserEntry.COLUMN_NAME_PASS + " TEXT," + DBContract.UserEntry.COLUMN_NAME_LIST + " TEXT" + ")";
+                DBContract.UserEntry.COLUMN_NAME_LOGIN + " TEXT," + DBContract.UserEntry.COLUMN_NAME_PASS + " TEXT" + ")";
         db.execSQL(CREATE_USERS_TABLE);
     }
 
@@ -44,10 +44,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public Integer authUser(String userLogin, String userPass) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String selectQuery = "SELECT * FROM " + DBContract.UserEntry.TABLE_NAME + " WHERE login = " + userLogin + " and pass = " + userPass;
+        String selectQuery = "SELECT  * FROM " + DBContract.UserEntry.TABLE_NAME + " WHERE login = '" + userLogin + "' and pass = '" + userPass +"'";
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst())
             return Integer.parseInt(cursor.getString(0));
+        else
+            return null;
+    }
+
+    public User findByLogin(String userLogin) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT  * FROM " + DBContract.UserEntry.TABLE_NAME + " WHERE login = '" + userLogin + "'";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()){
+            User user = new User();
+            user.setID(Integer.parseInt(cursor.getString(0)));
+            user.setLogin(cursor.getString(1));
+            user.setPass(cursor.getString(2));
+            return user;
+        }
         else
             return null;
     }
@@ -64,7 +79,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(DBContract.UserEntry.COLUMN_NAME_LOGIN, user.getLogin());
         values.put(DBContract.UserEntry.COLUMN_NAME_KEY_ID, user.getID());
         values.put(DBContract.UserEntry.COLUMN_NAME_PASS, newPass);
-        values.put(DBContract.UserEntry.COLUMN_NAME_LIST, user.getList());
         db.update(DBContract.UserEntry.TABLE_NAME, values, "login = " + user.getLogin(), null);
         db.close();
     }
@@ -82,7 +96,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 user.setID(Integer.parseInt(cursor.getString(0)));
                 user.setLogin(cursor.getString(1));
                 user.setPass(cursor.getString(2));
-                user.setList(cursor.getString(3));
                 usersList.add(user);
             } while (cursor.moveToNext());
         }
