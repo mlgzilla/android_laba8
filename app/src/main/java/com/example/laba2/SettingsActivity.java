@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SettingsActivity extends AppCompatActivity {
     String userLogin;
     DatabaseHandler db = new DatabaseHandler(this);
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -33,21 +34,31 @@ public class SettingsActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String newPass = passwdText.getText().toString();
-                if (!newPass.equals("")){
-                    db.updatePass(db.findByLogin(userLogin), newPass);
-                    Toast.makeText(SettingsActivity.this, "Pass was changed.", Toast.LENGTH_LONG).show();
-                }
-                else
-                    Toast.makeText(SettingsActivity.this, "Pass cant be empty.", Toast.LENGTH_LONG).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String newPass = passwdText.getText().toString();
+                        if (!newPass.equals("")) {
+                            db.updatePass(db.findByLogin(userLogin), newPass);
+                            Toast.makeText(SettingsActivity.this, "Pass was changed.", Toast.LENGTH_LONG).show();
+                        } else
+                            Toast.makeText(SettingsActivity.this, "Pass cant be empty.", Toast.LENGTH_LONG).show();
+
+                    }
+                }).start();
             }
         });
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.removeUser(userLogin);
-                startActivity(authIntent);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        db.removeUser(userLogin);
+                        startActivity(authIntent);
+                    }
+                }).start();
             }
         });
 
