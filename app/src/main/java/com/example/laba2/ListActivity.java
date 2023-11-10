@@ -3,6 +3,7 @@ package com.example.laba2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -44,6 +45,7 @@ public class ListActivity extends AppCompatActivity {
         Button buttonAdd = findViewById(R.id.buttonAdd);
         Button buttonRm = findViewById(R.id.buttonRm);
         EditText editText = findViewById(R.id.editText);
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
 
 
         ArrayList<String> selectedElements = new ArrayList<>();
@@ -54,11 +56,8 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id)
             {
-                String element = (String) TextAdapter.getItem(position);
-                if (textList.isItemChecked(position))
-                    selectedElements.add(element);
-                else
-                    selectedElements.remove(element);
+                settingsIntent.putExtra("userLogin", userLogin);
+                startActivity(settingsIntent);
             }
         });
 

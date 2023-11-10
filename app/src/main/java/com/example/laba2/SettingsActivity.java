@@ -16,6 +16,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        setContentView(R.layout.settings_activity);
 
         Bundle arguments = getIntent().getExtras();
         userLogin = arguments.get("userLogin").toString();

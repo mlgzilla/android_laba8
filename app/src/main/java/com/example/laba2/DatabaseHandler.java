@@ -42,9 +42,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Integer authUser(String userLogin, String userPass) {
+    public Integer loginUser(String userLogin, String userPass) {
         SQLiteDatabase db = this.getWritableDatabase();
         String selectQuery = "SELECT  * FROM " + DBContract.UserEntry.TABLE_NAME + " WHERE login = '" + userLogin + "' and pass = '" + userPass +"'";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst())
+            return Integer.parseInt(cursor.getString(0));
+        else
+            return null;
+    }
+
+    public Integer authUser(String userLogin) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT  * FROM " + DBContract.UserEntry.TABLE_NAME + " WHERE login = '" + userLogin + "'";
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst())
             return Integer.parseInt(cursor.getString(0));
