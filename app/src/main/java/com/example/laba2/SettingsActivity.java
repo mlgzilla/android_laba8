@@ -38,13 +38,17 @@ public class SettingsActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String newPass = passwdText.getText().toString();
-                        if (!newPass.equals("")) {
-                            db.updatePass(db.findByLogin(userLogin), newPass);
-                            Toast.makeText(SettingsActivity.this, "Pass was changed.", Toast.LENGTH_LONG).show();
-                        } else
-                            Toast.makeText(SettingsActivity.this, "Pass cant be empty.", Toast.LENGTH_LONG).show();
-
+                        passwdText.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                String newPass = passwdText.getText().toString();
+                                if (!newPass.equals("")) {
+                                    db.updatePass(db.findByLogin(userLogin), newPass);
+                                    Toast.makeText(SettingsActivity.this, "Pass was changed.", Toast.LENGTH_LONG).show();
+                                } else
+                                    Toast.makeText(SettingsActivity.this, "Pass cant be empty.", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                 }).start();
             }

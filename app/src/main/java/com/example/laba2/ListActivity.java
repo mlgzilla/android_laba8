@@ -56,23 +56,19 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id)
             {
-                settingsIntent.putExtra("userLogin", userLogin);
-                startActivity(settingsIntent);
+                String element = (String) TextAdapter.getItem(position);
+                if (textList.isItemChecked(position))
+                    selectedElements.add(element);
+                else
+                    selectedElements.remove(element);
             }
         });
 
         buttonLang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (buttonAdd.getText().toString().equals("Add")){
-                    buttonAdd.setText("Добавить");
-                    buttonRm.setText("Удалить");
-                }
-                else {
-                    buttonAdd.setText("Add");
-                    buttonRm.setText("Remove");
-                }
-                TextAdapter.notifyDataSetChanged();
+                settingsIntent.putExtra("userLogin", userLogin);
+                startActivity(settingsIntent);
             }
         });
         buttonAdd.setOnClickListener(new View.OnClickListener() {

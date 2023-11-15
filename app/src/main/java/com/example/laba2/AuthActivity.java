@@ -26,30 +26,45 @@ public class AuthActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Thread(() -> {
-                    Integer userId = db.loginUser(loginText.getText().toString(), passwdText.getText().toString());
-                    if (userId != null) {
-                        openIntent.putExtra("userLogin", loginText.getText().toString());
-                        startActivity(openIntent);
-                    } else
-                        Toast.makeText(AuthActivity.this, "Wrong login or password, try again.", Toast.LENGTH_LONG).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loginText.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Integer userId = db.loginUser(loginText.getText().toString(), passwdText.getText().toString());
+                                if (userId != null) {
+                                    openIntent.putExtra("userLogin", loginText.getText().toString());
+                                    startActivity(openIntent);
+                                } else
+                                    Toast.makeText(AuthActivity.this, "Wrong login or password, try again.", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
                 }).start();
             }
         });
         regButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Thread(() -> {
-                    Integer userId = db.loginUser(loginText.getText().toString(), passwdText.getText().toString());
-                    if (userId == null) {
-                        User user = new User();
-                        user.setLogin(loginText.getText().toString());
-                        user.setPass(passwdText.getText().toString());
-                        db.addUser(user);
-                        Toast.makeText(AuthActivity.this, "User was registered.", Toast.LENGTH_LONG).show();
-                    } else
-                        Toast.makeText(AuthActivity.this, "User with this login already exists.", Toast.LENGTH_LONG).show();
-
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loginText.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Integer userId = db.authUser(loginText.getText().toString());
+                                if (userId == null) {
+                                    User user = new User();
+                                    user.setLogin(loginText.getText().toString());
+                                    user.setPass(passwdText.getText().toString());
+                                    db.addUser(user);
+                                    Toast.makeText(AuthActivity.this, "User was registered.", Toast.LENGTH_LONG).show();
+                                } else
+                                    Toast.makeText(AuthActivity.this, "User with this login already exists.", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
                 }).start();
             }
         });
