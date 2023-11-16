@@ -5,49 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Введите логин и пароль"
-        android:layout_marginTop="60pt"
-        android:layout_marginStart="60pt"
-        android:layout_marginHorizontal="60pt"/>
+    <androidx.camera.view.PreviewView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/view_finder"/>
 
-    <EditText
-        android:id="@+id/editTextLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="12"
-        android:layout_marginTop="10pt"
-        android:layout_marginStart="35pt"
-        android:layout_below="@+id/textView"/>
-
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="12"
-        android:inputType="textPassword"
-        android:layout_below="@+id/editTextLogin"
-        android:layout_marginTop="10pt"
-        android:layout_marginStart="35pt"/>
     <Button
-        android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextPassword"
-        android:layout_marginTop="10pt"
-        android:layout_marginStart="70pt"
-        android:text="Войти"/>
-    <Button
-        android:id="@+id/regButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/submitButton"
-        android:layout_marginTop="10pt"
-        android:layout_marginStart="50pt"
-        android:text="Зарегистрироваться"/>
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:id="@+id/shoot_button"
+        android:text="Выстрелить"/>
 
 
 </RelativeLayout>
