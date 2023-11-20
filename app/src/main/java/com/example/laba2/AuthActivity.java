@@ -3,12 +3,18 @@ package com.example.laba2;
 import android.content.ContentValues;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.util.Range;
 import android.view.View;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.Camera;
+import androidx.camera.core.CameraControl;
+import androidx.camera.core.CameraInfo;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ExposureState;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
@@ -25,17 +31,36 @@ public class AuthActivity extends AppCompatActivity {
 
     private ProcessCameraProvider cameraProvider;
     private ImageCapture imageCapture;
+    private CameraControl cameraControl;
+    private CameraInfo cameraInfo;
 
     @Override
     protected void onStart() {
         super.onStart();
         activityBinding = AuthActivityBinding.inflate(getLayoutInflater());
         setContentView(activityBinding.getRoot());
+        activityBinding.seekBar.setActivated(false);
 
         activityBinding.shootButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 capturePhoto();
+            }
+        });
+        activityBinding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                cameraControl.setExposureCompensationIndex(i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
@@ -95,7 +120,17 @@ public class AuthActivity extends AppCompatActivity {
         imageCapture = new ImageCapture.Builder().build();
         try {
             cameraProvider.unbindAll();
-            cameraProvider.bindToLifecycle(this, defaultFrontCamera, preview, imageCapture);
+            Camera camera = cameraProvider.bindToLifecycle(this, defaultFrontCamera, preview, imageCapture);
+            cameraControl = camera.getCameraControl();
+            cameraInfo = camera.getCameraInfo();
+            cameraControl.setExposureCompensationIndex(0);
+            Range<Integer> exposureRange = cameraInfo.getExposureState().getExposureCompensationRange();
+            activityBinding.seekBar.setMax(exposureRange.getUpper());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                activityBinding.seekBar.setMin(exposureRange.getLower());
+            }
+            activityBinding.seekBar.setProgress(cameraInfo.getExposureState().getExposureCompensationIndex());
+            activityBinding.seekBar.setActivated(true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
